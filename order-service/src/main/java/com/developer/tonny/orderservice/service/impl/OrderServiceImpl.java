@@ -3,6 +3,7 @@ package com.developer.tonny.orderservice.service.impl;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.developer.tonny.orderservice.entity.Order;
 import com.developer.tonny.orderservice.entity.OrderItem;
+import com.developer.tonny.orderservice.exception.InventoryServiceException;
+import com.developer.tonny.orderservice.exception.NotEnoughQuantityException;
+import com.developer.tonny.orderservice.exception.OrderServiceException;
 import com.developer.tonny.orderservice.model.GenericResponse;
 import com.developer.tonny.orderservice.model.OrderItemRequest;
 import com.developer.tonny.orderservice.model.OrderRequest;
@@ -19,15 +23,19 @@ import com.developer.tonny.orderservice.repository.OrderRepository;
 import com.developer.tonny.orderservice.service.OrderService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    // private final WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, WebClient.Builder webClientBuilder) {
         this.orderRepository = orderRepository;
+        this.webClientBuilder = webClientBuilder;
     }
 
     @SuppressWarnings("unchecked")
