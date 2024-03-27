@@ -8,6 +8,6 @@ import com.developer.tonny.orderservice.entity.Order;
  *
  * @author tonny
  */
-public interface OrderRepo extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 }
